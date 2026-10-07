@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Central de Entregas — Redes</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">REDES DE COMPUTADORES E SEGURANÇA NA NUVEM · CURSO TÉCNICO</div>
+  <h1>Central de Entregas</h1>
+  <p class="lead">Tudo o que você precisa entregar na disciplina, em um só lugar. Abra esta página no começo de cada aula, veja a semana e marque o que já fez.</p>
+
+  <nav class="nav" aria-label="Páginas da central">
+    <a href="index.html" aria-current="page">Minhas entregas</a>
+    <a href="recuperacao.html">Recuperação</a>
+    <a href="avancado.html">Nível avançado</a>
+  </nav>
+
+  <div class="caixa suave naoimprime">
+    <div class="linha">
+      <label for="aluno"><b>Seu nome e turma:</b></label>
+      <input class="campo" id="aluno" placeholder="Ex.: Ana Souza — 1º A" autocomplete="off">
+    </div>
+    <div class="placar" style="margin-top:6px">Fica salvo só neste computador. Use sempre o mesmo navegador.</div>
+  </div>
+
+  <h2>Sua segunda-feira em 3 aulas</h2>
+  <div class="caixa">
+    <ol class="passos">
+      <li><div><strong>Aula 1 — Entender</strong><span>Abra a central, veja o tema da semana e acompanhe a explicação. Responda os Pause e Responda no AVA.</span></div></li>
+      <li><div><strong>Aula 2 — Fazer</strong><span>Abra o Registro de Aula da semana aqui na central e resolva a atividade.</span></div></li>
+      <li><div><strong>Aula 3 — Entregar</strong><span>Gere o PDF, envie no AVA, faça a Tarefa SP e marque tudo aqui. Sobrou tempo? Vá para o Nível avançado.</span></div></li>
+    </ol>
+  </div>
+
+  <h2>Entregas da semana</h2>
+  <p class="lead" style="margin-bottom:12px">Cada semana tem até três entregas. Marque a caixinha somente depois de enviar.</p>
+  <div class="caixa">
+    <h3>Quanto vale cada entrega</h3>
+    <div class="linha" style="gap:8px 18px">
+      <span><span class="tag ok">no prazo</span> até <b id="dias">5</b> dias depois da aula: <b>nota cheia</b></span>
+      <span><span class="tag bad">atrasado</span> depois do prazo: <b>metade da nota</b></span>
+      <span><span class="tag">não entregue</span> <b>zero</b></span>
+    </div>
+  </div>
+  <div class="abas naoimprime" id="abas" role="tablist" aria-label="Bimestre"></div>
+  <div class="caixa">
+    <div class="linha" style="justify-content:space-between">
+      <b id="tituloBim"></b>
+      <span class="placar" id="placar"></span>
+    </div>
+    <div class="barra" aria-hidden="true"><i id="barra"></i></div>
+    <div class="linha" id="eventos" style="margin-top:8px"></div>
+  </div>
+  <div id="semanas"></div>
+  <div class="linha naoimprime" style="margin-top:6px">
+    <button class="botao sec" id="imprimir" type="button">Imprimir meu progresso</button>
+  </div>
+
+  <h2>Como a sua nota é fechada</h2>
+  <div class="caixa">
+    <p style="margin:0 0 10px">Digite a nota de 0 a 10 que você tem (ou espera ter) em cada parte para ver a média do bimestre.</p>
+    <div class="tabela"><table>
+      <thead><tr><th>Parte da nota</th><th>Peso</th><th>Sua nota</th></tr></thead>
+      <tbody id="pesos"></tbody>
+    </table></div>
+    <div class="linha" style="margin-top:12px;justify-content:space-between">
+      <span>Média do bimestre: <span class="media" id="media">—</span></span>
+      <span class="placar" id="faltam"></span>
+    </div>
+  </div>
+
+  <h2>Escolha o seu caminho</h2>
+  <div class="grade tres">
+    <a class="trilha" href="#semanas"><b>Estou em dia</b><small>Siga as entregas da semana, na ordem.</small></a>
+    <a class="trilha rec" href="recuperacao.html"><b>Fiquei para trás</b><small>Recuperação: o essencial do bimestre em 1 semana, com um único trabalho para entregar.</small></a>
+    <a class="trilha adv" href="avancado.html"><b>Quero mais</b><small>Nível avançado: 9 desafios no Packet Tracer. Você está preparado? Teste lá.</small></a>
+  </div>
+
+  <h2>Antes da prova e da Prova Paulista Técnica</h2>
+  <div class="caixa">
+    <p style="margin:0">Faça esta conferência na semana anterior à prova. Se marcar menos de 4 itens, comece pela <a href="recuperacao.html">Recuperação</a>.</p>
+    <ul class="check" id="preparo">
+      <li><input type="checkbox" id="pp1"><label for="pp1">Refiz todos os Pause e Responda do bimestre e entendi cada erro.</label></li>
+      <li><input type="checkbox" id="pp2"><label for="pp2">Entreguei todos os Registros de Aula do bimestre.</label></li>
+      <li><input type="checkbox" id="pp3"><label for="pp3">Fiz todas as Tarefas SP do bimestre.</label></li>
+      <li><input type="checkbox" id="pp4"><label for="pp4">Consigo explicar com as minhas palavras o tema de cada semana.</label></li>
+      <li><input type="checkbox" id="pp5"><label for="pp5">Consigo olhar o desenho de uma rede e apontar onde está o problema.</label></li>
+      <li><input type="checkbox" id="pp6"><label for="pp6">Anotei as dúvidas que sobraram para perguntar ao professor.</label></li>
+    </ul>
+  </div>
+
+  <h2>Precisa de ajuda?</h2>
+  <div class="caixa">
+    <ul class="simples">
+      <li><a id="lkApostila" target="_blank" rel="noopener">Apostila de Redes interativa</a> — para rever a explicação de qualquer tema.</li>
+      <li><a id="lkGit" target="_blank" rel="noopener">Apostila do Cisco Packet Tracer</a> — para montar e testar redes no simulador.</li>
+      <li>Travou por mais de 10 minutos? Pergunte a um colega e depois chame o professor.</li>
+    </ul>
+  </div>
+
+  <footer>Central de apoio às entregas da disciplina. Os envios oficiais continuam sendo feitos no AVA.</footer>
+</div>
+
+<script src="dados.js"></script>
+<script>
+(function () {
+  var CHAVE = "central_redes_";
+  function ler(k) { try { return localStorage.getItem(CHAVE + k); } catch (e) { return null; } }
+  function gravar(k, v) { try { localStorage.setItem(CHAVE + k, v); } catch (e) {} }
+
+  function data(txt) { var p = txt.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function diaMes(d) { return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2); }
+  function diasAte(d) { var hoje = new Date(); hoje.setHours(0, 0, 0, 0); return Math.round((d - hoje) / 86400000); }
+
+  // Prazo da entrega = data da aula + diasPrazo. Dentro do prazo: nota cheia; depois: metade.
+  function prazo(aula, feito) {
+    if (!aula) return '<span class="tag">prazo a definir</span>';
+    var fim = data(aula); fim.setDate(fim.getDate() + (CENTRAL.diasPrazo || 5));
+    var dias = diasAte(fim), txt = diaMes(fim);
+    if (feito) return '<span class="tag ok">prazo ' + txt + '</span>';
+    if (dias < 0) return '<span class="tag bad">atrasado · vale metade</span>';
+    if (dias === 0) return '<span class="tag warn">último dia para nota cheia</span>';
+    if (dias <= 2) return '<span class="tag warn">nota cheia até ' + txt + ' · falta' + (dias > 1 ? 'm ' : ' ') + dias + ' dia' + (dias > 1 ? 's' : '') + '</span>';
+    return '<span class="tag">nota cheia até ' + txt + '</span>';
+  }
+  // Data de prova (sem regra de pontuação).
+  function evento(txt) {
+    if (!txt) return '<span class="tag">data a definir</span>';
+    var d = data(txt), dias = diasAte(d);
+    if (dias < 0) return '<span class="tag">foi em ' + diaMes(d) + '</span>';
+    if (dias === 0) return '<span class="tag warn">é hoje</span>';
+    return '<span class="tag' + (dias <= 7 ? ' warn' : '') + '">' + diaMes(d) + ' · falta' + (dias > 1 ? 'm ' : ' ') + dias + ' dia' + (dias > 1 ? 's' : '') + '</span>';
+  }
+
+  var bimAtivo = +(ler("bim") || CENTRAL.bimestreAtual || 1);
+  var abas = document.getElementById("abas"), lista = document.getElementById("semanas");
+
+  function entregasDa(sem) {
+    var e = [{ id: "pause", nome: "Pause e Responda", onde: "Responda os quizzes das aulas da semana no AVA.", data: sem.aula }];
+    e.push({ id: "registro", nome: "Registro de Aula", onde: "Faça a atividade, gere o PDF e envie no AVA.", data: sem.aula, links: sem.registros });
+    if (sem.tarefaSP) e.push({ id: "tarefa", nome: "Tarefa SP", onde: "Resolva a tarefa da semana na plataforma Tarefa SP.", data: sem.aula });
+    return e;
+  }
+
+  function desenhar() {
+    var bim = CENTRAL.bimestres.filter(function (b) { return b.n === bimAtivo; })[0] || CENTRAL.bimestres[0];
+    abas.innerHTML = CENTRAL.bimestres.map(function (b) {
+      return '<button type="button" role="tab" data-b="' + b.n + '" aria-selected="' + (b.n === bim.n) + '">' + b.titulo + '</button>';
+    }).join("");
+    document.getElementById("tituloBim").textContent = bim.titulo + " — " + bim.semanas;
+    var ev = "";
+    ev += '<span>Prova: ' + evento(bim.prova) + '</span>';
+    ev += '<span>Prova Paulista Técnica: ' + evento(bim.provaPaulista) + '</span>';
+    document.getElementById("eventos").innerHTML = ev;
+
+    var total = 0, feitos = 0, aberta = false, html = "";
+    bim.itens.forEach(function (sem) {
+      var ents = entregasDa(sem), ok = 0, corpo = "";
+      ents.forEach(function (en) {
+        var id = "s" + sem.s + "_" + en.id, marcado = ler(id) === "1";
+        total++; if (marcado) { feitos++; ok++; }
+        var links = "";
+        if (en.links) links = '<span class="links">' + en.links.map(function (l) {
+          return '<a target="_blank" rel="noopener" href="' + CENTRAL.baseAtividades + l[1] + '">Abrir: ' + l[0] + '</a>';
+        }).join("") + '</span>';
+        corpo += '<div class="entrega"><input type="checkbox" id="' + id + '"' + (marcado ? " checked" : "") + '>' +
+          '<div><label for="' + id + '">' + en.nome + '</label> ' + prazo(en.data, marcado) +
+          '<span class="onde">' + en.onde + '</span>' + links + '</div></div>';
+      });
+      var completa = ok === ents.length, abrir = !completa && !aberta;
+      if (abrir) aberta = true;
+      html += '<details class="semana' + (completa ? " feita" : "") + '"' + (abrir ? " open" : "") + '>' +
+        '<summary><span class="num">S' + sem.s + '</span><span class="tema">' + sem.tema + '</span>' +
+        '<span class="tag' + (completa ? " ok" : "") + '">' + ok + ' de ' + ents.length + '</span></summary>' +
+        '<div class="corpo">' + corpo +
+        '<p style="margin:10px 0 0"><a class="botao sec" href="relatorio.html?s=' + sem.s + '">Fazer o relatório da semana</a></p></div></details>';
+    });
+    lista.innerHTML = html;
+    document.getElementById("placar").textContent = feitos + " de " + total + " entregas marcadas";
+    document.getElementById("barra").style.width = (total ? Math.round(feitos / total * 100) : 0) + "%";
+  }
+
+  abas.addEventListener("click", function (e) {
+    var b = e.target.getAttribute("data-b"); if (!b) return;
+    bimAtivo = +b; gravar("bim", b); desenhar();
+  });
+  lista.addEventListener("change", function (e) {
+    if (e.target.type !== "checkbox") return;
+    gravar(e.target.id, e.target.checked ? "1" : "0");
+    var abertas = [].map.call(lista.querySelectorAll("details"), function (d) { return d.open; });
+    desenhar();
+    [].forEach.call(lista.querySelectorAll("details"), function (d, i) { d.open = abertas[i]; });
+  });
+
+  var aluno = document.getElementById("aluno");
+  aluno.value = ler("aluno") || "";
+  aluno.addEventListener("input", function () { gravar("aluno", aluno.value); });
+
+  [].forEach.call(document.querySelectorAll("#preparo input"), function (c) {
+    c.checked = ler(c.id) === "1";
+    c.addEventListener("change", function () { gravar(c.id, c.checked ? "1" : "0"); });
+  });
+
+  // Simulador da média: soma de nota × peso de cada parte.
+  var corpoPesos = document.getElementById("pesos");
+  corpoPesos.innerHTML = CENTRAL.pesos.map(function (p) {
+    return '<tr><td><label for="nota_' + p.id + '">' + p.nome + '</label></td><td>' + p.peso + '%</td>' +
+      '<td><input class="campo nota" id="nota_' + p.id + '" type="number" min="0" max="10" step="0.1" inputmode="decimal" value="' + (ler("nota_" + p.id) || "") + '"></td></tr>';
+  }).join("");
+  function calcular() {
+    var soma = 0, vazias = 0;
+    CENTRAL.pesos.forEach(function (p) {
+      var c = document.getElementById("nota_" + p.id), v = c.value === "" ? null : Math.min(10, Math.max(0, +c.value));
+      if (v === null || isNaN(v)) vazias++; else soma += v * p.peso / 100;
+    });
+    document.getElementById("media").textContent = vazias === CENTRAL.pesos.length ? "—" : soma.toFixed(1).replace(".", ",");
+    document.getElementById("faltam").textContent = vazias && vazias < CENTRAL.pesos.length ? "Parcial: falta preencher " + vazias + " parte" + (vazias > 1 ? "s" : "") + "." : "";
+  }
+  corpoPesos.addEventListener("input", function (e) { gravar(e.target.id, e.target.value); calcular(); });
+  calcular();
+
+  document.getElementById("dias").textContent = CENTRAL.diasPrazo || 5;
+  document.getElementById("lkApostila").href = CENTRAL.apostila;
+  document.getElementById("lkGit").href = CENTRAL.apostilaPacketTracer;
+  document.getElementById("imprimir").addEventListener("click", function () { window.print(); });
+  desenhar();
+})();
+</script>
+</body>
+</html>

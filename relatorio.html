@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório da Semana — Redes</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">REDES DE COMPUTADORES E SEGURANÇA NA NUVEM · RELATÓRIO DA SEMANA</div>
+  <h1 id="titulo">Relatório da semana</h1>
+  <p class="lead naoimprime">Preencha depois de fazer as entregas. Este relatório mostra o que você entregou e vira o seu material de estudo para a prova escrita.</p>
+
+  <nav class="nav" aria-label="Páginas da central">
+    <a href="index.html">Minhas entregas</a>
+    <a href="recuperacao.html">Recuperação</a>
+    <a href="avancado.html">Nível avançado</a>
+  </nav>
+
+  <div class="caixa naoimprime">
+    <div class="linha">
+      <label for="escolha"><b>Semana:</b></label>
+      <select class="campo" id="escolha"></select>
+    </div>
+  </div>
+
+  <div id="relatorio"></div>
+
+  <div class="linha naoimprime" style="margin:14px 0">
+    <button class="botao" id="pdf" type="button">Gerar PDF do relatório</button>
+    <a class="botao sec" href="index.html">Voltar para as entregas</a>
+  </div>
+
+  <div class="caixa naoimprime" id="estudo">
+    <h3>Estudar para a prova escrita com o NotebookLM</h3>
+    <ol class="passos">
+      <li><div><strong>Gere o PDF deste relatório</strong><span>Use o botão acima e salve o arquivo com o seu nome e a semana.</span></div></li>
+      <li><div><strong>Abra o NotebookLM e crie um caderno da disciplina</strong><span>Use um caderno só para Redes e vá juntando os relatórios de todas as semanas.</span></div></li>
+      <li><div><strong>Adicione o PDF como fonte</strong><span>O NotebookLM passa a responder com base no que está no seu relatório.</span></div></li>
+      <li><div><strong>Treine com os pedidos abaixo</strong><span>Copie um pedido, cole no NotebookLM e responda sem olhar o material.</span></div></li>
+    </ol>
+    <p class="rotulo">Pedidos prontos para copiar</p>
+    <div id="pedidos"></div>
+    <p style="margin:12px 0 0"><a id="lkNb" target="_blank" rel="noopener">Abrir o NotebookLM</a></p>
+  </div>
+
+  <footer>O NotebookLM ajuda a treinar, mas pode errar: confira as respostas com a apostila e com o professor.</footer>
+</div>
+
+<script src="dados.js"></script>
+<script src="conteudo.js"></script>
+<script src="treino.js"></script>
+<script>
+(function () {
+  var BASE = "central_redes_";
+  function ler(k) { try { return localStorage.getItem(BASE + k); } catch (e) { return null; } }
+  function gravar(k, v) { try { localStorage.setItem(BASE + k, v); } catch (e) {} }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function diaMes(d) { return ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear(); }
+
+  // Todas as semanas, com o bimestre de cada uma.
+  var semanas = [];
+  CENTRAL.bimestres.forEach(function (b) { b.itens.forEach(function (it) { semanas.push({ bim: b, sem: it }); }); });
+
+  // Tema de estudo (conteudo.js + treino.js) que cobre a semana.
+  function temaDa(s) {
+    for (var chave in TREINO) {
+      if (TREINO[chave].sem.indexOf(s) >= 0) {
+        var p = chave.split("-");
+        return { passo: REC[+p[0]].passos[+p[1] - 1], perguntas: TREINO[chave].q };
+      }
+    }
+    return null;
+  }
+
+  var escolha = document.getElementById("escolha");
+  escolha.innerHTML = semanas.map(function (x) {
+    return '<option value="' + x.sem.s + '">Semana ' + x.sem.s + ' — ' + esc(x.sem.tema) + '</option>';
+  }).join("");
+  var pedido = +(new URLSearchParams(location.search).get("s") || 0);
+  var atual = semanas.filter(function (x) { return x.sem.s === pedido; })[0] || semanas[semanas.length - 1];
+  escolha.value = atual.sem.s;
+
+  var SITUACOES = [["", "Escolha…"], ["cheia", "Entreguei no prazo — nota cheia"], ["metade", "Entreguei atrasado — metade"], ["zero", "Não entreguei — zero"]];
+  var area = document.getElementById("relatorio");
+
+  function campoTexto(id, rotulo) {
+    return '<div class="pergunta"><b><label for="' + id + '">' + esc(rotulo) + '</label></b>' +
+      '<textarea class="campo" id="' + id + '">' + esc(ler(id) || "") + '</textarea>' +
+      '<div class="resposta soimprime" data-de="' + id + '"></div></div>';
+  }
+
+  function desenhar() {
+    var s = atual.sem, pre = "rel_s" + s.s + "_", tema = temaDa(s.s);
+    document.getElementById("titulo").textContent = "Relatório da Semana " + s.s;
+    document.title = "Relatório Semana " + s.s + " — Redes";
+
+    var prazoTxt = "a definir";
+    if (s.aula) {
+      var p = s.aula.split("-"), fim = new Date(+p[0], +p[1] - 1, +p[2]);
+      fim.setDate(fim.getDate() + (CENTRAL.diasPrazo || 5)); prazoTxt = diaMes(fim);
+    }
+    var html = '<div class="caixa"><div class="tabela"><table><tbody>' +
+      '<tr><th>Aluno e turma</th><td>' + esc(ler("aluno") || "preencha seu nome na página Minhas entregas") + '</td></tr>' +
+      '<tr><th>Disciplina</th><td>' + esc(CENTRAL.disciplina) + '</td></tr>' +
+      '<tr><th>Semana e tema</th><td>Semana ' + s.s + ' — ' + esc(s.tema) + ' (' + esc(atual.bim.titulo) + ')</td></tr>' +
+      '<tr><th>Prazo para nota cheia</th><td>' + prazoTxt + '</td></tr></tbody></table></div></div>';
+
+    // 1. Entregas
+    var ents = [["pause", "Pause e Responda", "AVA"], ["registro", "Registro de Aula", "AVA"]];
+    if (s.tarefaSP) ents.push(["tarefa", "Tarefa SP", "Tarefas SP"]);
+    html += '<h2>1. O que eu entreguei</h2><div class="caixa"><div class="tabela"><table><thead><tr><th>Entrega</th><th>Entra em</th><th>Situação</th></tr></thead><tbody>';
+    ents.forEach(function (e) {
+      var id = pre + "sit_" + e[0], v = ler(id) || "";
+      var rot = SITUACOES.filter(function (o) { return o[0] === v; })[0][1];
+      html += '<tr><td><label for="' + id + '">' + e[1] + '</label></td><td>' + e[2] + '</td><td><select class="campo" id="' + id + '">' +
+        SITUACOES.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === v ? " selected" : "") + '>' + o[1] + '</option>'; }).join("") +
+        '</select><span class="soimprime" data-sel="' + id + '">' + (v ? rot : "não informado") + '</span></td></tr>';
+    });
+    html += '</tbody></table></div><p class="placar" style="margin:8px 0 0">Regra: até ' + (CENTRAL.diasPrazo || 5) +
+      ' dias depois da aula vale nota cheia; atrasado vale metade; não entregue vale zero.</p></div>';
+
+    // 2. Resumo da aula
+    html += '<h2>2. Resumo da aula</h2><div class="caixa">';
+    if (tema) {
+      html += '<h3>' + esc(tema.passo.t) + '</h3><ul class="simples">' +
+        tema.passo.ess.map(function (e) { return "<li>" + esc(e) + "</li>"; }).join("") + '</ul>' +
+        (tema.passo.ex ? '<p class="rotulo">Exemplo</p><pre><code>' + esc(tema.passo.ex) + '</code></pre>' : '');
+    } else {
+      html += '<p style="margin:0">O resumo desta semana ainda não foi cadastrado. Use os slides da aula e as suas anotações.</p>';
+    }
+    html += '</div>';
+
+    // 3. Com as minhas palavras
+    html += '<h2>3. Com as minhas palavras</h2><div class="caixa">' +
+      campoTexto(pre + "aprendi", "O que eu aprendi nesta semana (3 a 5 linhas)") +
+      campoTexto(pre + "exemplo", "Um exemplo meu, diferente do exemplo da aula") +
+      campoTexto(pre + "duvida", "O que ainda não ficou claro") + '</div>';
+
+    // 4. Treino para a prova escrita
+    html += '<h2>4. Treino para a prova escrita</h2><div class="caixa">';
+    if (tema) {
+      html += '<p style="margin:0 0 4px">Responda sem consultar. Depois confira com o resumo acima.</p>';
+      tema.perguntas.forEach(function (q, i) { html += campoTexto(pre + "q" + (i + 1), (i + 1) + ". " + q); });
+    } else {
+      html += '<p style="margin:0">As perguntas de treino desta semana ainda não foram cadastradas.</p>';
+    }
+    html += '</div>';
+    area.innerHTML = html;
+
+    // Pedidos para o NotebookLM, já com o tema da semana.
+    var t = tema ? tema.passo.t : s.tema;
+    var pedidos = [
+      "Usando só as minhas fontes, crie 5 perguntas dissertativas sobre \"" + t + "\", uma de cada vez. Espere a minha resposta e corrija explicando o erro.",
+      "Explique \"" + t + "\" de um jeito simples, com um exemplo diferente do que está nas minhas fontes.",
+      "Mostre um código curto sobre \"" + t + "\" e pergunte o que ele mostra na tela. Só diga a resposta depois que eu responder.",
+      "Com base nas minhas respostas do relatório, diga quais pontos eu ainda preciso revisar para a prova escrita."
+    ];
+    document.getElementById("pedidos").innerHTML = pedidos.map(function (p, i) {
+      return '<div class="pergunta"><span id="ped' + i + '">' + esc(p) + '</span><br>' +
+        '<button class="botao sec" type="button" data-copiar="ped' + i + '" style="padding:3px 10px;font-size:13px;margin-top:6px">Copiar</button></div>';
+    }).join("");
+  }
+
+  area.addEventListener("input", function (e) { if (e.target.id) gravar(e.target.id, e.target.value); });
+  area.addEventListener("change", function (e) {
+    if (e.target.tagName !== "SELECT") return;
+    gravar(e.target.id, e.target.value);
+    var alvo = area.querySelector('[data-sel="' + e.target.id + '"]');
+    if (alvo) alvo.textContent = e.target.value ? e.target.options[e.target.selectedIndex].text : "não informado";
+  });
+  escolha.addEventListener("change", function () {
+    atual = semanas.filter(function (x) { return x.sem.s === +escolha.value; })[0];
+    history.replaceState(null, "", "relatorio.html?s=" + atual.sem.s); desenhar();
+  });
+  document.getElementById("pedidos").addEventListener("click", function (e) {
+    var id = e.target.getAttribute("data-copiar"); if (!id) return;
+    var txt = document.getElementById(id).textContent;
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { e.target.textContent = "Copiado"; }, function () {});
+  });
+  // No PDF, cada resposta aparece inteira no lugar da caixa de texto.
+  function prepararImpressao() {
+    [].forEach.call(area.querySelectorAll("[data-de]"), function (d) {
+      d.textContent = document.getElementById(d.getAttribute("data-de")).value || "(sem resposta)";
+    });
+  }
+  window.addEventListener("beforeprint", prepararImpressao);
+  document.getElementById("pdf").addEventListener("click", function () { prepararImpressao(); window.print(); });
+  document.getElementById("lkNb").href = CENTRAL.notebookLM;
+  desenhar();
+})();
+</script>
+</body>
+</html>

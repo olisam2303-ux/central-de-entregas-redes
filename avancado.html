@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nível Avançado — Redes</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">REDES DE COMPUTADORES E SEGURANÇA NA NUVEM · OPCIONAL</div>
+  <h1>Nível avançado: você está preparado?</h1>
+  <p class="lead">9 desafios no Cisco Packet Tracer, da primeira rede até o projeto de uma empresa. É opcional e não substitui as entregas da semana: termine primeiro o que está no AVA.</p>
+
+  <nav class="nav" aria-label="Páginas da central">
+    <a href="index.html">Minhas entregas</a>
+    <a href="recuperacao.html">Recuperação</a>
+    <a href="avancado.html" aria-current="page">Nível avançado</a>
+  </nav>
+
+  <div class="caixa">
+    <h3>Regras do jogo</h3>
+    <ol class="passos">
+      <li><div><strong>Teste se está preparado</strong><span>Cada nível começa com 5 perguntas. Acertando 4, os desafios do nível são liberados.</span></div></li>
+      <li><div><strong>Construa do zero</strong><span>Não há rede pronta. Você recebe a missão, os requisitos e os testes que a rede precisa passar.</span></div></li>
+      <li><div><strong>Passe pela prova de fogo</strong><span>Faça cada teste da lista. Se algum não der o resultado esperado, a rede ainda não está pronta.</span></div></li>
+      <li><div><strong>Use a criatividade</strong><span>Todo desafio tem ideias de bônus. Invente as suas também.</span></div></li>
+      <li><div><strong>Entregue</strong><span>Salve o arquivo do Packet Tracer (.pkt) com o seu nome e o número do desafio, junto com um documento curto explicando a rede. Entregue ao professor do jeito combinado.</span></div></li>
+    </ol>
+  </div>
+
+  <div class="caixa">
+    <div class="linha" style="justify-content:space-between"><b>Seus desafios concluídos</b><span class="placar" id="placar"></span></div>
+    <div class="barra" aria-hidden="true"><i id="barra"></i></div>
+  </div>
+
+  <div id="niveis"></div>
+
+  <footer>Dúvida sobre o simulador? Veja a <a id="lkGit" target="_blank" rel="noopener">apostila do Cisco Packet Tracer</a>.</footer>
+</div>
+
+<script src="dados.js"></script>
+<script src="desafios.js"></script>
+<script>
+(function () {
+  var CHAVE = "central_redes_adv_";
+  function ler(k) { try { return localStorage.getItem(CHAVE + k); } catch (e) { return null; } }
+  function gravar(k, v) { try { localStorage.setItem(CHAVE + k, v); } catch (e) {} }
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  var area = document.getElementById("niveis");
+  function desenhar() {
+    var total = 0, feitos = 0, html = "";
+    NIVEIS.forEach(function (nv) {
+      var liberado = ler(nv.id + "_ok") === "1";
+      html += '<h2>' + nv.nome + '</h2><p class="lead" style="margin-bottom:10px">' + nv.sub + '<br><b>' + nv.onde + '</b></p>';
+      if (!liberado) {
+        html += '<form class="caixa" data-quiz="' + nv.id + '"><h3>Teste de preparo</h3>';
+        nv.quiz.forEach(function (q, i) {
+          html += '<div class="q"><p>' + (i + 1) + '. ' + esc(q[0]) + '</p>' + (q[1] ? '<pre><code>' + esc(q[1]) + '</code></pre>' : '');
+          q[2].forEach(function (alt, j) {
+            html += '<label><input type="radio" name="' + nv.id + 'q' + i + '" value="' + j + '"> ' + esc(alt) + '</label>';
+          });
+          html += '</div>';
+        });
+        html += '<div class="linha" style="margin-top:12px"><button class="botao" type="submit">Conferir</button>' +
+          '<span class="resultado" role="status"></span></div></form>';
+      } else {
+        html += '<p><span class="tag ok">Preparo confirmado</span> <button class="botao sec naoimprime" type="button" data-refazer="' + nv.id + '" style="padding:3px 10px;font-size:13px">Refazer o teste</button></p>';
+      }
+      nv.desafios.forEach(function (d) {
+        total++;
+        var id = "d" + d.n, ok = ler(id) === "1"; if (ok) feitos++;
+        if (!liberado) {
+          html += '<div class="semana"><div class="corpo" style="border-top:0;padding:13px 16px;display:flex;gap:12px;align-items:center">' +
+            '<span class="num">' + d.n + '</span><span class="tema">' + esc(d.t) + '</span><span class="tag">bloqueado</span></div></div>';
+          return;
+        }
+        html += '<details class="semana' + (ok ? " feita" : "") + '"><summary><span class="num">' + d.n + '</span><span class="tema">' + esc(d.t) + '</span>' +
+          (ok ? '<span class="tag ok">concluído</span>' : '') + '</summary><div class="corpo">' +
+          '<p class="rotulo" style="margin-top:12px">Missão</p><p style="margin:0">' + esc(d.missao) + '</p>' +
+          '<p class="rotulo">Requisitos</p><ul class="simples">' + d.req.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + '</ul>' +
+          '<p class="rotulo">Prova de fogo</p><ul class="simples">' + d.fogo.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + '</ul>' +
+          '<p class="rotulo">Use a criatividade</p><p style="margin:0">' + esc(d.bonus) + '</p>' +
+          '<div class="entrega" style="margin-top:10px"><input type="checkbox" id="' + id + '"' + (ok ? " checked" : "") + '>' +
+          '<div><label for="' + id + '">Passei na prova de fogo e entreguei ao professor</label></div></div></div></details>';
+      });
+    });
+    area.innerHTML = html;
+    document.getElementById("placar").textContent = feitos + " de " + total + " desafios";
+    document.getElementById("barra").style.width = Math.round(feitos / total * 100) + "%";
+  }
+
+  area.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var id = e.target.getAttribute("data-quiz"), nv = NIVEIS.filter(function (n) { return n.id === id; })[0];
+    var acertos = 0, respondidas = 0;
+    nv.quiz.forEach(function (q, i) {
+      var m = e.target.querySelector('input[name="' + id + 'q' + i + '"]:checked');
+      if (m) { respondidas++; if (+m.value === q[3]) acertos++; }
+    });
+    var saida = e.target.querySelector(".resultado");
+    if (respondidas < nv.quiz.length) { saida.textContent = "Responda as 5 perguntas."; return; }
+    if (acertos >= 4) { gravar(id + "_ok", "1"); desenhar(); return; }
+    saida.textContent = "Você acertou " + acertos + " de 5. Reveja o conteúdo na apostila e tente de novo.";
+  });
+  area.addEventListener("click", function (e) {
+    var r = e.target.getAttribute("data-refazer"); if (!r) return;
+    gravar(r + "_ok", "0"); desenhar();
+  });
+  area.addEventListener("change", function (e) {
+    if (e.target.type !== "checkbox") return;
+    gravar(e.target.id, e.target.checked ? "1" : "0");
+    var abertas = [].map.call(area.querySelectorAll("details"), function (d) { return d.open; });
+    desenhar();
+    [].forEach.call(area.querySelectorAll("details"), function (d, i) { d.open = abertas[i]; });
+  });
+  document.getElementById("lkGit").href = CENTRAL.apostilaPacketTracer;
+  desenhar();
+})();
+</script>
+</body>
+</html>

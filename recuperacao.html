@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recuperação — Redes</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">REDES DE COMPUTADORES E SEGURANÇA NA NUVEM · RECUPERAÇÃO</div>
+  <h1>Recuperação em 1 semana</h1>
+  <p class="lead">Os mesmos temas do bimestre, só com o essencial. São 5 passos curtos e um único trabalho para entregar no final.</p>
+
+  <nav class="nav" aria-label="Páginas da central">
+    <a href="index.html">Minhas entregas</a>
+    <a href="recuperacao.html" aria-current="page">Recuperação</a>
+    <a href="avancado.html">Nível avançado</a>
+  </nav>
+
+  <div class="caixa">
+    <h3>Como funciona</h3>
+    <ol class="passos">
+      <li><div><strong>Escolha o bimestre</strong><span>Clique no bimestre que você precisa recuperar.</span></div></li>
+      <li><div><strong>Faça um passo por dia</strong><span>Leia o essencial, estude o exemplo, depois faça a tarefa. Cada passo leva cerca de 30 minutos.</span></div></li>
+      <li><div><strong>Guarde tudo no mesmo arquivo</strong><span>As tarefas se juntam e viram o trabalho final do passo 5.</span></div></li>
+      <li><div><strong>Entregue uma vez só</strong><span>No passo 5, envie o trabalho do jeito que o professor combinou (PDF no AVA ou folha entregue em mãos).</span></div></li>
+    </ol>
+  </div>
+
+  <div class="abas naoimprime" id="abas" role="tablist" aria-label="Bimestre"></div>
+  <div class="caixa">
+    <div class="linha" style="justify-content:space-between">
+      <b id="titulo"></b><span class="placar" id="placar"></span>
+    </div>
+    <div class="barra" aria-hidden="true"><i id="barra"></i></div>
+    <div class="placar" id="ferramenta"></div>
+  </div>
+  <div id="passos"></div>
+
+  <footer>A recuperação não substitui as aulas: ela garante o mínimo de cada tema. Depois de entregar, volte para as <a href="index.html">entregas da semana</a>.</footer>
+</div>
+
+<script src="dados.js"></script>
+<script src="conteudo.js"></script>
+<script>
+(function () {
+  var CHAVE = "central_redes_rec_";
+  function ler(k) { try { return localStorage.getItem(CHAVE + k); } catch (e) { return null; } }
+  function gravar(k, v) { try { localStorage.setItem(CHAVE + k, v); } catch (e) {} }
+
+  var bim = +(ler("bim") || 0);
+  if (!REC[bim]) bim = Math.max(1, (CENTRAL.bimestreAtual || 2) - 1);
+  var abas = document.getElementById("abas"), area = document.getElementById("passos");
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function desenhar() {
+    abas.innerHTML = CENTRAL.bimestres.map(function (b) {
+      return '<button type="button" role="tab" data-b="' + b.n + '" aria-selected="' + (b.n === bim) + '">' + b.titulo + '</button>';
+    }).join("");
+    var r = REC[bim], info = CENTRAL.bimestres[bim - 1], feitos = 0, aberto = false, html = "";
+    document.getElementById("titulo").textContent = "Recuperação do " + info.titulo + " — " + info.semanas;
+    document.getElementById("ferramenta").textContent = r.ferramenta;
+    r.passos.forEach(function (p, i) {
+      var id = "b" + bim + "p" + (i + 1), ok = ler(id) === "1", abrir = !ok && !aberto;
+      if (ok) feitos++; if (abrir) aberto = true;
+      html += '<details class="semana' + (ok ? " feita" : "") + '"' + (abrir ? " open" : "") + '>' +
+        '<summary><span class="num">Passo ' + (i + 1) + '</span><span class="tema">' + p.t + '</span><span class="tag">' + p.cobre + '</span></summary>' +
+        '<div class="corpo"><p class="rotulo" style="margin-top:12px">O essencial</p><ul class="simples">' +
+        p.ess.map(function (e) { return "<li>" + esc(e) + "</li>"; }).join("") + '</ul>' +
+        (p.ex ? '<p class="rotulo">Exemplo</p><pre><code>' + esc(p.ex) + '</code></pre>' : '') +
+        '<p class="rotulo">Sua tarefa</p><p style="margin:0">' + esc(p.tarefa) + '</p>' +
+        '<p class="rotulo">Como saber que está certo</p><p style="margin:0">' + esc(p.pronto) + '</p>' +
+        '<div class="entrega" style="margin-top:10px"><input type="checkbox" id="' + id + '"' + (ok ? " checked" : "") + '>' +
+        '<div><label for="' + id + '">Fiz este passo</label></div></div></div></details>';
+    });
+    area.innerHTML = html;
+    document.getElementById("placar").textContent = feitos + " de " + r.passos.length + " passos";
+    document.getElementById("barra").style.width = Math.round(feitos / r.passos.length * 100) + "%";
+  }
+  abas.addEventListener("click", function (e) {
+    var b = e.target.getAttribute("data-b"); if (!b) return;
+    bim = +b; gravar("bim", b); desenhar();
+  });
+  area.addEventListener("change", function (e) {
+    if (e.target.type !== "checkbox") return;
+    gravar(e.target.id, e.target.checked ? "1" : "0");
+    var abertas = [].map.call(area.querySelectorAll("details"), function (d) { return d.open; });
+    desenhar();
+    [].forEach.call(area.querySelectorAll("details"), function (d, i) { d.open = abertas[i]; });
+  });
+  desenhar();
+})();
+</script>
+</body>
+</html>
