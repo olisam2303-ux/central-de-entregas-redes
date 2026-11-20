@@ -117,7 +117,12 @@ const CENTRAL = {
           registros: [["Qual tipo de balanceador essa situação pede?", "redes-23a-s23a1.html"],
                       ["Esse sistema precisa crescer agora?", "redes-23b-s23a2.html"],
                       ["Até onde esse sistema aguenta?", "redes-23c-s23a3.html"]],
-          aula: "2026-10-19" }
+          aula: "2026-10-19" },
+        { s: 24, tema: "TLS, PKI e gestão de certificados", tarefaSP: true,
+          registros: [["O que cada mensagem do handshake TLS prova?", "redes-24a-s24a1.html"],
+                      ["Como se constrói uma cadeia de confiança PKI?", "redes-24b-s24a2.html"],
+                      ["Quem precisa provar quem é no mTLS?", "redes-24c-s24a3.html"]],
+          aula: "2026-10-26" }
         // Para incluir a próxima semana, copie o bloco acima, cole aqui
         // (separado por vírgula) e troque o número, o tema e o arquivo.
       ]
