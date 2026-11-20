@@ -127,7 +127,12 @@ const CENTRAL = {
           registros: [["O que esse log está tentando avisar?", "redes-25a-s25a1.html"],
                       ["Latência e erro: a mesma história?", "redes-25b-s25a2.html"],
                       ["O log explica o que o painel só mostrou?", "redes-25c-s25a3.html"]],
-          aula: "2026-11-02" }
+          aula: "2026-11-02" },
+        { s: 26, tema: "Edge computing e content delivery network (CDN)", tarefaSP: true,
+          registros: [["Em qual camada esse dado deve ser processado?", "redes-26a-s26a1.html"],
+                      ["CDN interna ou provedor externo?", "redes-26b-s26a2.html"],
+                      ["Cada tipo de conteúdo pede um cache diferente?", "redes-26c-s26a3.html"]],
+          aula: "2026-11-09" }
         // Para incluir a próxima semana, copie o bloco acima, cole aqui
         // (separado por vírgula) e troque o número, o tema e o arquivo.
       ]
