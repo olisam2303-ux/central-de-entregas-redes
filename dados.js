@@ -112,7 +112,12 @@ const CENTRAL = {
           registros: [["Que pedido o titular está fazendo?", "redes-22a-s22a1.html"],
                       ["Mapa de dados de um sistema de cadastro", "redes-22b-s22a2.html"],
                       ["Análise de conformidade de um cadastro com a LGPD", "redes-22c-s22a3.html"]],
-          aula: "2026-10-12" }
+          aula: "2026-10-12" },
+        { s: 23, tema: "Load balancer e auto-scaling", tarefaSP: true,
+          registros: [["Qual tipo de balanceador essa situação pede?", "redes-23a-s23a1.html"],
+                      ["Esse sistema precisa crescer agora?", "redes-23b-s23a2.html"],
+                      ["Até onde esse sistema aguenta?", "redes-23c-s23a3.html"]],
+          aula: "2026-10-19" }
         // Para incluir a próxima semana, copie o bloco acima, cole aqui
         // (separado por vírgula) e troque o número, o tema e o arquivo.
       ]
