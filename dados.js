@@ -122,7 +122,12 @@ const CENTRAL = {
           registros: [["O que cada mensagem do handshake TLS prova?", "redes-24a-s24a1.html"],
                       ["Como se constrói uma cadeia de confiança PKI?", "redes-24b-s24a2.html"],
                       ["Quem precisa provar quem é no mTLS?", "redes-24c-s24a3.html"]],
-          aula: "2026-10-26" }
+          aula: "2026-10-26" },
+        { s: 25, tema: "Diagnóstico de aplicações com logs e métricas", tarefaSP: true,
+          registros: [["O que esse log está tentando avisar?", "redes-25a-s25a1.html"],
+                      ["Latência e erro: a mesma história?", "redes-25b-s25a2.html"],
+                      ["O log explica o que o painel só mostrou?", "redes-25c-s25a3.html"]],
+          aula: "2026-11-02" }
         // Para incluir a próxima semana, copie o bloco acima, cole aqui
         // (separado por vírgula) e troque o número, o tema e o arquivo.
       ]
