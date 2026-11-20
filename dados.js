@@ -104,7 +104,8 @@ const CENTRAL = {
       prova: "", provaPaulista: "",
       itens: [
         { s: 21, tema: "Redes definidas por software e redes na nuvem", tarefaSP: true,
-          registros: [["Desenhando uma rede virtual na nuvem (VPC/VNet)", "redes-21a-s21a2.html"],
+          registros: [["Controlando o fluxo no campus: plano de controle e plano de dados", "redes-21c-s21a1.html"],
+                      ["Desenhando uma rede virtual na nuvem (VPC/VNet)", "redes-21a-s21a2.html"],
                       ["Planejando uma topologia SDN com Mininet", "redes-21b-s21a3.html"]],
           aula: "2026-10-05" }
         // Para incluir a próxima semana, copie o bloco acima, cole aqui
